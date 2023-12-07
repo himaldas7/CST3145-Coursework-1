@@ -48,10 +48,6 @@
                         <!-- 'add to cart' button -->
                         <button v-if="canAddToTheCart(lessons)" 
                         v-on:click="addItemToTheCart(lessons)">Add to the Cart</button>
-
-                        <!-- 'remove from cart' button-->
-                        <button v-if="isItemInCart(lessons.id)"
-                        v-on:click="removeItemFromCart(lesson.id)" >Remove from the Cart</button>
             
                         <!-- inventory message -->
                         <button v-else disabled>Add to the Cart</button>
@@ -78,6 +74,11 @@
                     <strong>Surname: </strong>
                     <input type="text" v-model.trim="order.surname">
                 </p>
+                <p>
+                    <strong>Phone Number: </strong>
+                    <input type="number" v-model.number="order.number">
+                </p>
+
                 <p>
                     <strong>Address: </strong>
                     <input type="text" v-model="order.address">
@@ -126,6 +127,9 @@
                     <strong>Surame: </strong>{{order.surname}}
                 </p>
                 <p>
+                    <strong>Phone Number: </strong>{{order.number}}
+                </p>
+                <p>
                     <strong>Address: </strong>{{order.address}}
                 </p>
                 <p>
@@ -161,22 +165,14 @@
                 lessons: lessons,
 
 
-              /*   lessons: {
-                    id: 1001,
-                    Subject: "Cat Food, 25lb bag",
-                    Location: "A 25 pound bag of irresistible ," + "organic goodness for your cat.",
-                    price: 2000,
-                    image: "images/catfood2.png",
-                    Spaces: 10,
-                    rating: 3
-                }, */
-
+             
 
 
                 cart: [],
                 order: {
                     name: "",
                     surname: "",
+                    number: "",
                     address: "",
                     state: "",
                     Zip: "",
