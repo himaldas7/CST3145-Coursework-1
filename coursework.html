@@ -8,6 +8,7 @@
     <title>Vue.js lesson website</title>
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
     <script src="lessons.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -110,10 +111,11 @@
                     <input type="radio" id="business" value="Business" v-model="order.method">
                     <lable for="business">Business</lable>
                 </p>
+                <h3>All The Lessons Brought:-</h3>
 
                 <div v-for="itemId in cart">
                     <p>
-                        <strong>Item: </strong>{{ getLessonById(itemId).Subject }}
+                        <strong>Lessons: </strong>{{ getLessonById(itemId).Subject }}
                         <button v-on:click="removeItemFromOrder(itemId)">Remove from Order</button>
                     </p>
                     <!-- ... (other item details) ... -->
