@@ -15,6 +15,11 @@
     <div id="app">
         <header>
             <h1 v-text="sitename"></h1>
+
+            <!-- Search input field -->
+            <input type="text" v-model="searchTerm" placeholder="Search lessons">
+            <button v-on:click="performSearch">Search</button>
+
             <button v-on:click="showCheckout">
                 {{itemsInTheCart}}
                 <span class="fa-solid fa-cart-shopping"></span>
@@ -43,6 +48,10 @@
                         <!-- 'add to cart' button -->
                         <button v-if="canAddToTheCart(lessons)" 
                         v-on:click="addItemToTheCart(lessons)">Add to the Cart</button>
+
+                        <!-- 'remove from cart' button-->
+                        <button v-if="isItemInCart(lessons.id)"
+                        v-on:click="removeItemFromCart(lesson.id)" >Remove from the Cart</button>
             
                         <!-- inventory message -->
                         <button v-else disabled>Add to the Cart</button>
@@ -79,11 +88,11 @@
                         <option disabled></option>
                         <option v-for="(state, key) in states" v-bind:value="state">{{key}}</option>
                         <!--  <option v-bind:value="states.AL">AL</option>
-                                    <option v-bind:value="states.AR">AR</option>
-                                    <option v-bind:value="states.CA">CA</option>
-                                    <option v-bind:value="states.NR">VR</option> -->
+                                                    <option v-bind:value="states.AR">AR</option>
+                                                    <option v-bind:value="states.CA">CA</option>
+                                                    <option v-bind:value="states.NR">VR</option> -->
                     </select>
-            
+                
                 </p>
                 <p>
                     <strong>Zip/Postal Code: </strong>
@@ -100,6 +109,14 @@
                     <input type="radio" id="business" value="Business" v-model="order.method">
                     <lable for="business">Business</lable>
                 </p>
+
+                <div v-for="itemId in cart">
+                    <p>
+                        <strong>Item: </strong>{{ getLessonById(itemId).Subject }}
+                        <button v-on:click="removeItemFromOrder(itemId)">Remove from Order</button>
+                    </p>
+                    <!-- ... (other item details) ... -->
+                </div>
             
                 <h2>Order Information</h2>
                 <p>
@@ -173,7 +190,10 @@
                     AR: "Arizona",
                     CA: " California",
                     NV: "Nevada"
-                }
+                },
+                searchTerm: "",
+            
+
             },
             methods: {
                 showCheckout: function () {
@@ -188,6 +208,29 @@
                 addItemToTheCart: function (lessons) {
                     this.cart.push(lessons.id);
                 },
+
+                removeItemFromCart: function (lessonId) {
+                    const index = this.cart.indexOf(lessonId);
+                    if (index !== -1) {
+                        this.cart.splice(index, 1);
+                    }
+                },
+
+                isItemInCart: function (lessonId) {
+                    return this.cart.includes(lessonId);
+                },
+
+                removeItemFromOrder: function (itemId) {
+                    const index = this.cart.indexOf(itemId);
+                    if (index !== -1) {
+                        this.cart.splice(index, 1);
+                    }
+                },
+
+                getLessonById: function (lessonId) {
+                    return this.lessons.find(lesson => lesson.id === lessonId) || {};
+                },
+                
                 submitCheckoutForm() {
                     alert("Congratulations, Order Submitted :) ")
                 },
@@ -207,7 +250,19 @@
             },
             itemsLeft(lessons) {
                     return lessons.Spaces - this.cartCount(lessons.id);
-                }
+                },
+
+                performSearch: function () {
+                    const searchTerm = this.searchTerm.toLowerCase();
+                    this.showlessons = true;
+                    this.lessons = lessons.filter(lesson =>
+                        lesson.Subject.toLowerCase().includes(searchTerm)
+                    );
+                },
+                resetSearch: function () {
+                    this.searchTerm = "";
+                    this.lessons = lessons;
+                },
             },
 
 
@@ -224,10 +279,17 @@
                     }
                     // sort the 'lessons' array and return it
                     return this.lessons.sort(compare);
-                }
+                },
 
-            }
+                filteredLessons: function () {
+                    const searchTerm = this.searchTerm.toLowerCase();
+                    return this.lessons.filter(lesson =>
+                        lesson.Subject.toLowerCase().includes(searchTerm)
+                    );
 
+                },
+
+            },
         });
 
     </script>
