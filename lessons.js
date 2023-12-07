@@ -1,14 +1,3 @@
-/* “Display List of Lessons” functionality (5%):
-A. there should be at least 10 lessons, and each lesson should have 5 
-spaces (or availability) (1%).
-B. each lesson should have at least (2%): Subject, Location, Price, 
-Spaces (or availability: this indicates how many spaces are left), a Font 
-Awesome icon (or an Image).
-C. the list of lessons must be stored as an array of JSON objects, one 
-object for each lesson, in a separate JavaScript file, such as lessons.js
-or lessons.json (1%).
-D. v-for must be used for the display of the lesson list (1%) */
-
 
 
 let lessons = [
